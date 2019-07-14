@@ -86,7 +86,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(activity as MainActivity, DummyContent.ITEMS, false)
+        recyclerView.adapter = TicketsRecyclerViewAdapter(activity as MainActivity, DummyContent.ITEMS, false)
     }
 
     companion object {

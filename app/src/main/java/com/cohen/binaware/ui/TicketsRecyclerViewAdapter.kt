@@ -10,12 +10,12 @@ import com.cohen.binaware.R
 import com.cohen.binaware.dummy.DummyContent
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
-class SimpleItemRecyclerViewAdapter(
+class TicketsRecyclerViewAdapter(
     private val parentActivity: MainActivity,
     private val values: List<DummyContent.DummyItem>,
     private val twoPane: Boolean
 ) :
-    RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    RecyclerView.Adapter<TicketsRecyclerViewAdapter.ViewHolder>() {
 
     private val onClickListener: View.OnClickListener
 

@@ -21,4 +21,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:transitionName="fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:elevation="10dp"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/plus_vector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
