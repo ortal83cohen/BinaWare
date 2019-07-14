@@ -2,14 +2,13 @@ package com.cohen.binaware
 
 import android.os.Bundle
 import android.view.*
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cohen.binaware.dummy.DummyContent
+import com.cohen.binaware.helpers.hideKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_scrolling.*
-
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,8 +18,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            if (topBar.progress == 0f) {
+                topBar.transitionToEnd()
+                fab.requestFocus()
+                hideKeyboard(fab)
+            } else {
+                topBar.transitionToStart()
+            }
+        }
+
+        menu.setOnClickListener {
+
         }
 
         setupRecyclerView(item_list)
@@ -46,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     class SimpleItemRecyclerViewAdapter(
         private val parentActivity: MainActivity,
         private val values: List<DummyContent.DummyItem>,
