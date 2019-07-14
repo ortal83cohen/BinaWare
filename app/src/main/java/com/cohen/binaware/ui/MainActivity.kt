@@ -10,9 +10,6 @@ import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
-
-
-
 class MainActivity : AppCompatActivity() {
     private lateinit var addTicketViewModel: AddTicketViewModel
 
@@ -42,9 +39,10 @@ class MainActivity : AppCompatActivity() {
 
         addTicketViewModel.selectedTicketType.observe(this, Observer {
             it?.let {
+                addTicketViewModel.setupChipsData(it)
                 setAddTicketMode()
             } ?: kotlin.run {
-               // setMainMode()
+                // setMainMode()
             }
 
         })
@@ -68,8 +66,8 @@ class MainActivity : AppCompatActivity() {
     private fun setAddTicketMode() {
         mainFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
         addTicketFragment.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
-        addTicketFragment.sharedElementReturnTransition  = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
-        mainFragment.sharedElementReturnTransition  = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        addTicketFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        mainFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
 
         val transaction = supportFragmentManager.beginTransaction()
 

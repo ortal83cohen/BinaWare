@@ -5,13 +5,16 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cohen.binaware.R
+import com.cohen.binaware.data.ChipData
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_add_ticket.*
 import kotlinx.android.synthetic.main.fragment_main.menu
 
@@ -33,7 +36,7 @@ class AddTicketFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedElementReturnTransition  = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         addTicketViewModel =
             ViewModelProviders.of(activity as MainActivity).get(AddTicketViewModel::class.java)
         menu.setOnClickListener {
@@ -55,29 +58,72 @@ class AddTicketFragment : Fragment() {
 
             }
 
-
-            val chips = ArrayList<String>()
-
-            chips.add("1111111111111")
-            chips.add("22222222222222")
-            chips.add("33333333333333")
-            chipGroup?.apply {
-                removeAllViews()
-                chips.forEach {
-                    val chip = Chip(context)
-                    chip.text = it
-                    chip.isClickable = true
-                    chip.isCheckable = true
-                    chip.isCloseIconVisible = false
-                    chip.chipBackgroundColor = resources.getColorStateList(R.color.chip_color)
-                    addView(chip)
-                }
-            }
+            addChipGroup(addTicketViewModel.getChipsData().value, chipGroup, reason)
 
         })
 
 
     }
 
+    private fun addChipGroup(chipData: ChipData?, chipGroup: ChipGroup?, textView: TextView?) {
+        chipGroup?.apply {
 
+            removeAllChipViews(this, textView)
+
+            chipData?.apply {
+                textView?.text = subListName
+                subList?.forEach {
+                    val chip = Chip(context)
+                    chip.text = it.name
+                    chip.tag = it
+                    chip.isClickable = true
+                    chip.isCheckable = true
+                    chip.isCloseIconVisible = false
+                    chip.chipBackgroundColor = resources.getColorStateList(R.color.chip_color)
+                    addView(chip)
+                }
+                setOnCheckedChangeListener { chipGroup, id ->
+                    if (id == -1) {
+                        when (chipData.tierNumber) {
+                            ChipData.TierNumber.FIRST -> removeAllChipViews(chipGroup2, reason2)
+                            ChipData.TierNumber.SECOND -> removeAllChipViews(chipGroup3, reason3)
+                        }
+                    } else {
+                        for (i in 0 until childCount) {
+                            val chip = getChildAt(i) as Chip
+                            if (chip.id == id) {
+                                if (chip.tag is ChipData) {
+                                    val chipData = chip.tag as ChipData
+                                    when (chipData.tierNumber) {
+                                        ChipData.TierNumber.SECOND -> addChipGroup(chip.tag as ChipData, chipGroup2, reason2)
+                                        ChipData.TierNumber.THIRD -> addChipGroup(chip.tag as ChipData, chipGroup3, reason3)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun removeAllChipViews(chipGroup: ChipGroup?, reason: TextView?) {
+        reason?.text = ""
+        chipGroup?.apply {
+            getChildAt(0)?.let {
+                val chip = it as Chip
+                if (chip.tag is ChipData) {
+                    val chipData = chip.tag as ChipData
+                    when (chipData.tierNumber) {
+                        ChipData.TierNumber.SECOND -> removeAllChipViews(chipGroup2, reason2)
+                        ChipData.TierNumber.THIRD -> removeAllChipViews(chipGroup3, reason3)
+                    }
+                }
+                removeAllViews()
+            }
+        }
+    }
 }
+
+
+
