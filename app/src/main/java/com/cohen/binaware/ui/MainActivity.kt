@@ -10,6 +10,9 @@ import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
+
+
+
 class MainActivity : AppCompatActivity() {
     private lateinit var addTicketViewModel: AddTicketViewModel
 
@@ -41,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             it?.let {
                 setAddTicketMode()
             } ?: kotlin.run {
-
+               // setMainMode()
             }
 
         })
@@ -51,7 +54,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setMainMode() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(com.cohen.binaware.R.id.fragment_container, mainFragment, "mainFragment")
+//        if (addTicketFragment.isVisible) {
+//            addTicketFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+//            mainFragment.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+//            transaction.addSharedElement(addTicketFragment.fab, addTicketFragment.fab.transitionName)
+//        }
+
+        transaction.replace(R.id.fragment_container, mainFragment, "mainFragment")
         transaction.addToBackStack("mainFragment")
         transaction.commit()
     }
@@ -59,8 +68,11 @@ class MainActivity : AppCompatActivity() {
     private fun setAddTicketMode() {
         mainFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
         addTicketFragment.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        addTicketFragment.sharedElementReturnTransition  = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        mainFragment.sharedElementReturnTransition  = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
 
         val transaction = supportFragmentManager.beginTransaction()
+
         transaction.addSharedElement(mainFragment.fab, mainFragment.fab.transitionName)
         transaction.replace(R.id.fragment_container, addTicketFragment, "addTicketFragment")
         transaction.addToBackStack("addTicketFragment")
