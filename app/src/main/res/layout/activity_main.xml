@@ -1,98 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <FrameLayout
+
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:stateListAnimator="@drawable/appbar_always_elevated"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-
-            >
-
-            <androidx.constraintlayout.motion.widget.MotionLayout
-                android:id="@+id/topBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                app:layoutDescription="@xml/top_bar_motion_layout">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/search"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/search"
-                    android:backgroundTint="@color/white"
-                    android:inputType="textAutoComplete"
-                    android:imeOptions="actionSearch"
-                    android:elevation="3dp"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:hint="search"
-                    android:padding="16dp"
-                    android:paddingStart="60dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@android:color/darker_gray"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:elevation="3dp"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_menu_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/search"
-                    app:layout_constraintStart_toStartOf="@+id/search"
-                    app:layout_constraintTop_toTopOf="@+id/search" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Open tickets"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/search" />
-            </androidx.constraintlayout.motion.widget.MotionLayout>
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/content_scrolling" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:elevation="10dp"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

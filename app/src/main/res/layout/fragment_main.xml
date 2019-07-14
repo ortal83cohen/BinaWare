@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".ui.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:stateListAnimator="@drawable/appbar_always_elevated">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/topBar"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:paddingBottom="16dp"
+                app:layoutDescription="@xml/top_bar_motion_layout">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/search"
+                    android:backgroundTint="@color/white"
+                    android:elevation="3dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:hint="search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textAutoComplete"
+                    android:padding="16dp"
+                    android:paddingStart="60dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:elevation="3dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_menu_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/search"
+                    app:layout_constraintStart_toStartOf="@+id/search"
+                    app:layout_constraintTop_toTopOf="@+id/search" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Open tickets"
+                    android:textColor="@color/black"
+                    app:layout_constraintLeft_toLeftOf="@+id/search"
+                    app:layout_constraintTop_toBottomOf="@+id/search" />
+
+                <TextView
+                    android:id="@+id/addTicket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Add new ticket"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/search"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/search" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/b1"
+                    style="@style/Theme.App.TransparentButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:backgroundTint="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="60dp"
+                    android:text="add service ticket"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addTicket" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/b2"
+                    style="@style/Theme.App.TransparentButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:backgroundTint="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="60dp"
+                    android:text="add spare part ticket"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/b1" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/b3"
+                    style="@style/Theme.App.TransparentButton"
+                    android:layout_width="300dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="60dp"
+                    android:text="add urgent ticket"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/b2" />
+
+
+                <TextView
+                    android:id="@+id/circle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/black"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:text="S"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/b1"
+                    app:layout_constraintStart_toStartOf="@+id/b1"
+                    app:layout_constraintTop_toTopOf="@+id/b1" />
+
+                <TextView
+                    android:id="@+id/circle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@android:color/holo_orange_light"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:text="P"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/b1"
+                    app:layout_constraintStart_toStartOf="@+id/b1"
+                    app:layout_constraintTop_toTopOf="@+id/b1" />
+
+                <TextView
+                    android:id="@+id/circle3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@android:color/holo_green_dark"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:text="U"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/b1"
+                    app:layout_constraintStart_toStartOf="@+id/b1"
+                    app:layout_constraintTop_toTopOf="@+id/b1" />
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_scrolling" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:elevation="10dp"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/plus_vector" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -12,5 +12,5 @@
     tools:showIn="@layout/activity_main"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".MainActivity"
+    tools:context=".ui.MainActivity"
     tools:listitem="@layout/item_list_content" />
