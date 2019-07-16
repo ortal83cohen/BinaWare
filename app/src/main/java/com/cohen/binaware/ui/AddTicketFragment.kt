@@ -1,5 +1,7 @@
 package com.cohen.binaware.ui
 
+import android.animation.ValueAnimator
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
@@ -10,16 +12,22 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
 import com.cohen.binaware.data.ChipData
+import com.cohen.binaware.helpers.gone
+import com.cohen.binaware.helpers.hideKeyboard
+import com.cohen.binaware.helpers.visible
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_add_ticket.*
+import kotlinx.android.synthetic.main.fragment_add_ticket.fab
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.menu
 
 class AddTicketFragment : Fragment() {
-
+var fabOpen = false
     companion object {
         fun newInstance() = AddTicketFragment()
     }
@@ -33,6 +41,9 @@ class AddTicketFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_add_ticket, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,6 +73,36 @@ class AddTicketFragment : Fragment() {
 
         })
 
+
+        fab.setOnClickListener { view ->
+            if (tabsMotionLayout.progress == 0f) {
+                tabsMotionLayout.transitionToEnd()
+                fabOpen =  true
+                fab.setImageDrawable(
+                    AnimatedVectorDrawableCompat.create(
+                        context!!,
+                        R.drawable.plus_vector
+                    )
+                )
+                val drawable = fab.drawable
+                if (drawable != null && drawable is Animatable) {
+                    drawable.start()
+                }
+            } else {
+                tabsMotionLayout.transitionToStart()
+                fabOpen = false
+                fab.setImageDrawable(
+                    AnimatedVectorDrawableCompat.create(
+                        context!!,
+                        R.drawable.minus_vector
+                    )
+                )
+                val drawable = fab.drawable
+                if (drawable != null && drawable is Animatable) {
+                    drawable.start()
+                }
+            }
+        }
 
     }
 

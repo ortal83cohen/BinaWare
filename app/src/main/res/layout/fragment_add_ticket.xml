@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,19 +33,70 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/menu" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:transitionName="fab"
-        app:elevation="10dp"
-        app:layout_anchorGravity="bottom|end"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/tabsMotionLayout"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        app:layoutDescription="@xml/fabs_motion_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/plus_vector" />
+        app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:elevation="10dp"
+            app:fabSize="mini"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:elevation="10dp"
+            app:fabSize="mini"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_perm_camera_mic_black_24dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
+            app:elevation="10dp"
+            app:fabSize="mini"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_attach_file_black_24dp" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:transitionName="fab"
+            app:elevation="10dp"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/plus_vector" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/machineIsRunningText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +106,7 @@
         app:layout_constraintRight_toLeftOf="@+id/machineIsRunningSwitch"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/machineIsRunningSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,7 +116,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +125,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/machineIsRunningSwitch" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edit_text"
         android:layout_width="0dp"
         android:layout_height="130dp"
@@ -100,7 +151,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +169,7 @@
             app:chipSpacingVertical="8dp"
             app:singleSelection="true" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reason2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,7 +186,8 @@
             app:chipSpacingHorizontal="8dp"
             app:chipSpacingVertical="8dp"
             app:singleSelection="true" />
-        <TextView
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reason3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
