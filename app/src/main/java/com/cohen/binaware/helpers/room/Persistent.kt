@@ -44,9 +44,9 @@ class Persistent(context: Context) : IPersistent {
 //        appDatabase.userDao().insert(user)
 //    }
 
-    override fun addOrUpdateCluster(cluster: Ticket) {
+    override fun addOrUpdateTicket(ticket: Ticket) {
         GlobalScope.launch {
-            appDatabase.ticketDao().insert(cluster)
+            appDatabase.ticketDao().insert(ticket)
         }
     }
 

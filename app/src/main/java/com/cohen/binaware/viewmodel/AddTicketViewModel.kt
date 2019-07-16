@@ -7,13 +7,9 @@ import com.cohen.binaware.data.ChipData
 import com.cohen.binaware.models.Ticket
 import com.cohen.binaware.room.Persistent
 
-class AddTicketViewModel() : ViewModel() {
+class AddTicketViewModel(val persistent: Persistent) : ViewModel() {
 
-    private lateinit var persistent: Persistent
-   
     private val chipsData = MutableLiveData<ChipData?>()
-
-//    private val database: AppDatabase = Controller
 
     fun setSelectedTicketType(ticketType: TicketType?) {
         selectedTicketType.postValue(ticketType)
@@ -99,10 +95,10 @@ class AddTicketViewModel() : ViewModel() {
     }
 
     fun addTicket(ticket: Ticket) {
-        persistent
+        persistent.addOrUpdateTicket(ticket)
     }
 
     fun init(persistent: Persistent) {
-        this.persistent = persistent
+//        this.persistent = persistent
     }
 }

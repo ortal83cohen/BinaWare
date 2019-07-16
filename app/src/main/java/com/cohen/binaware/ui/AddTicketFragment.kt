@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
 import com.cohen.binaware.data.ChipData
@@ -21,6 +20,7 @@ import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_add_ticket.*
 import kotlinx.android.synthetic.main.fragment_add_ticket.fab
 import kotlinx.android.synthetic.main.fragment_main.menu
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AddTicketFragment : Fragment() {
     var fabOpen = false
@@ -29,8 +29,7 @@ class AddTicketFragment : Fragment() {
         fun newInstance() = AddTicketFragment()
     }
 
-    private lateinit var addTicketViewModel: AddTicketViewModel
-
+    val addTicketViewModel: AddTicketViewModel by sharedViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,8 +45,7 @@ class AddTicketFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        addTicketViewModel =
-            ViewModelProviders.of(activity as MainActivity).get(AddTicketViewModel::class.java)
+
         menu.setOnClickListener {
             Toast.makeText(context, "open menu", Toast.LENGTH_SHORT).show()
         }

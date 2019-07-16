@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.cohen.binaware.R
 import com.cohen.binaware.room.Persistent
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
-    //    lateinit var persistent: Persistent
     val persistent: Persistent   by inject()
     private lateinit var addTicketViewModel: AddTicketViewModel
 
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
             AddTicketFragment.newInstance()
         }
 
-
     private val mainFragment by lazy {
         if (supportFragmentManager.findFragmentByTag("MainFragment") != null) {
             supportFragmentManager.findFragmentByTag("MainFragment") as MainFragment
@@ -33,11 +31,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        addTicketViewModel = ViewModelProviders.of(this).get(AddTicketViewModel::class.java)
+
+        val addTicketViewModel: AddTicketViewModel by viewModel()
 //        persistent = Persistent(this)
         addTicketViewModel.init(persistent)
         setMainMode()

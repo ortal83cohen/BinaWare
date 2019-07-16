@@ -18,7 +18,7 @@ interface IPersistent {
 //
 //    suspend fun addOrUpdateUser(user: UserContainer)
 
-    fun addOrUpdateCluster(ticket: Ticket)
+    fun addOrUpdateTicket(ticket: Ticket)
 
     fun deleteUser()
 

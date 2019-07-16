@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
@@ -17,11 +16,11 @@ import com.cohen.binaware.helpers.hideKeyboard
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MainFragment : Fragment() {
-    //    val persistent: Persistent by inject()
-    private lateinit var addTicketViewModel: AddTicketViewModel
+    val addTicketViewModel: AddTicketViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +33,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        addTicketViewModel = ViewModelProviders.of(activity as MainActivity).get(AddTicketViewModel::class.java)
-//        setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             if (topBar.progress == 0f) {
                 topBar.transitionToEnd()
