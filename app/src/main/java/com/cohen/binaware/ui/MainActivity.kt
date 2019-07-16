@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cohen.binaware.R
+import com.cohen.binaware.room.Persistent
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
+    //    lateinit var persistent: Persistent
+    val persistent: Persistent   by inject()
     private lateinit var addTicketViewModel: AddTicketViewModel
 
     private val addTicketFragment =
@@ -34,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         addTicketViewModel = ViewModelProviders.of(this).get(AddTicketViewModel::class.java)
-
+//        persistent = Persistent(this)
+        addTicketViewModel.init(persistent)
         setMainMode()
 
         addTicketViewModel.selectedTicketType.observe(this, Observer {
@@ -64,10 +69,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAddTicketMode() {
-        mainFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
-        addTicketFragment.sharedElementEnterTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
-        addTicketFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
-        mainFragment.sharedElementReturnTransition = TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        mainFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        addTicketFragment.sharedElementEnterTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        addTicketFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        mainFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
 
         val transaction = supportFragmentManager.beginTransaction()
 

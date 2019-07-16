@@ -4,9 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.cohen.binaware.data.ChipData
+import com.cohen.binaware.models.Ticket
+import com.cohen.binaware.room.Persistent
 
-class AddTicketViewModel : ViewModel() {
+class AddTicketViewModel() : ViewModel() {
+
+    private lateinit var persistent: Persistent
+   
     private val chipsData = MutableLiveData<ChipData?>()
+
+//    private val database: AppDatabase = Controller
+
     fun setSelectedTicketType(ticketType: TicketType?) {
         selectedTicketType.postValue(ticketType)
     }
@@ -69,7 +77,14 @@ class AddTicketViewModel : ViewModel() {
 
         typeSubList.add(ChipData("Part", "Part type", partTypeSubList, ChipData.TierNumber.THIRD))
         typeSubList.add(ChipData("Tool", "Tool type", toolTypeSubList, ChipData.TierNumber.THIRD))
-        typeSubList.add(ChipData("Motor", "Motor type", motorTypeSubList, ChipData.TierNumber.THIRD))
+        typeSubList.add(
+            ChipData(
+                "Motor",
+                "Motor type",
+                motorTypeSubList,
+                ChipData.TierNumber.THIRD
+            )
+        )
         typeSubList.add(ChipData("Belt", "Belt Type", beltTypeSubList, ChipData.TierNumber.THIRD))
 
         val reasonsSubList = ArrayList<ChipData>()
@@ -81,5 +96,13 @@ class AddTicketViewModel : ViewModel() {
         chipsData.postValue(ChipData(null, "reasons", reasonsSubList, ChipData.TierNumber.FIRST))
 
 
+    }
+
+    fun addTicket(ticket: Ticket) {
+        persistent
+    }
+
+    fun init(persistent: Persistent) {
+        this.persistent = persistent
     }
 }

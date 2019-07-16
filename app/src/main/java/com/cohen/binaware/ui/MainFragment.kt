@@ -18,7 +18,9 @@ import com.cohen.binaware.viewmodel.AddTicketViewModel
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
+
 class MainFragment : Fragment() {
+    //    val persistent: Persistent by inject()
     private lateinit var addTicketViewModel: AddTicketViewModel
 
     override fun onCreateView(
@@ -49,7 +51,12 @@ class MainFragment : Fragment() {
                 }
                 anim.duration = 300
                 anim.start()
-                fab.setImageDrawable(AnimatedVectorDrawableCompat.create(context!!, R.drawable.plus_vector))
+                fab.setImageDrawable(
+                    AnimatedVectorDrawableCompat.create(
+                        context!!,
+                        R.drawable.plus_vector
+                    )
+                )
                 val drawable = fab.drawable
                 if (drawable != null && drawable is Animatable) {
                     drawable.start()
@@ -65,7 +72,12 @@ class MainFragment : Fragment() {
                 anim.duration = 300
                 anim.start()
                 topBar.transitionToStart()
-                fab.setImageDrawable(AnimatedVectorDrawableCompat.create(context!!, R.drawable.minus_vector))
+                fab.setImageDrawable(
+                    AnimatedVectorDrawableCompat.create(
+                        context!!,
+                        R.drawable.minus_vector
+                    )
+                )
                 val drawable = fab.drawable
                 if (drawable != null && drawable is Animatable) {
                     drawable.start()
@@ -86,7 +98,8 @@ class MainFragment : Fragment() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = TicketsRecyclerViewAdapter(activity as MainActivity, DummyContent.ITEMS, false)
+        recyclerView.adapter =
+            TicketsRecyclerViewAdapter(activity as MainActivity, DummyContent.ITEMS, false)
     }
 
     companion object {

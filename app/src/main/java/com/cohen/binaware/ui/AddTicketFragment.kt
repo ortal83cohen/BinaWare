@@ -1,6 +1,5 @@
 package com.cohen.binaware.ui
 
-import android.animation.ValueAnimator
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -15,19 +14,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
 import com.cohen.binaware.data.ChipData
-import com.cohen.binaware.helpers.gone
-import com.cohen.binaware.helpers.hideKeyboard
-import com.cohen.binaware.helpers.visible
+import com.cohen.binaware.models.Ticket
 import com.cohen.binaware.viewmodel.AddTicketViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_add_ticket.*
 import kotlinx.android.synthetic.main.fragment_add_ticket.fab
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.menu
 
 class AddTicketFragment : Fragment() {
-var fabOpen = false
+    var fabOpen = false
+
     companion object {
         fun newInstance() = AddTicketFragment()
     }
@@ -47,7 +44,8 @@ var fabOpen = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         addTicketViewModel =
             ViewModelProviders.of(activity as MainActivity).get(AddTicketViewModel::class.java)
         menu.setOnClickListener {
@@ -71,13 +69,19 @@ var fabOpen = false
 
             addChipGroup(addTicketViewModel.getChipsData().value, chipGroup, reason)
 
+
+            button.setOnClickListener {
+
+
+                addTicketViewModel.addTicket(Ticket())
+            }
         })
 
 
         fab.setOnClickListener { view ->
             if (tabsMotionLayout.progress == 0f) {
                 tabsMotionLayout.transitionToEnd()
-                fabOpen =  true
+                fabOpen = true
                 fab.setImageDrawable(
                     AnimatedVectorDrawableCompat.create(
                         context!!,
@@ -108,7 +112,7 @@ var fabOpen = false
 
     private fun addChipGroup(chipData: ChipData?, chipGroup: ChipGroup?, textView: TextView?) {
         chipGroup?.apply {
-
+            button.isEnabled = false
             removeAllChipViews(this, textView)
 
             chipData?.apply {
@@ -128,6 +132,7 @@ var fabOpen = false
                         when (chipData.tierNumber) {
                             ChipData.TierNumber.FIRST -> removeAllChipViews(chipGroup2, reason2)
                             ChipData.TierNumber.SECOND -> removeAllChipViews(chipGroup3, reason3)
+                            else -> button.isEnabled = false
                         }
                     } else {
                         for (i in 0 until childCount) {
@@ -136,8 +141,17 @@ var fabOpen = false
                                 if (chip.tag is ChipData) {
                                     val chipData = chip.tag as ChipData
                                     when (chipData.tierNumber) {
-                                        ChipData.TierNumber.SECOND -> addChipGroup(chip.tag as ChipData, chipGroup2, reason2)
-                                        ChipData.TierNumber.THIRD -> addChipGroup(chip.tag as ChipData, chipGroup3, reason3)
+                                        ChipData.TierNumber.SECOND -> addChipGroup(
+                                            chip.tag as ChipData,
+                                            chipGroup2,
+                                            reason2
+                                        )
+                                        ChipData.TierNumber.THIRD -> addChipGroup(
+                                            chip.tag as ChipData,
+                                            chipGroup3,
+                                            reason3
+                                        )
+                                        ChipData.TierNumber.FOURTH -> button.isEnabled = true
                                     }
                                 }
                             }
@@ -149,6 +163,7 @@ var fabOpen = false
     }
 
     private fun removeAllChipViews(chipGroup: ChipGroup?, reason: TextView?) {
+        button.isEnabled = false
         reason?.text = ""
         chipGroup?.apply {
             getChildAt(0)?.let {
