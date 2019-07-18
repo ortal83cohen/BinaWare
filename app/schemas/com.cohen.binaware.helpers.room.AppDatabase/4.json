@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "33bfd70b74a9abec38128bcd94442782",
+    "version": 4,
+    "identityHash": "c4d0ac155f7454d1880f873ef77fdb85",
     "entities": [
       {
         "tableName": "user",
@@ -50,11 +50,17 @@
       },
       {
         "tableName": "ticket",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`users` TEXT NOT NULL, `title` TEXT, `subTitle` TEXT, `time` TEXT, `id` TEXT NOT NULL, `chips` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `ticketType` TEXT NOT NULL, `title` TEXT, `subTitle` TEXT, `time` TEXT, `selectedChips` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "users",
-            "columnName": "users",
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ticketType",
+            "columnName": "ticketType",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -77,14 +83,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "chips",
-            "columnName": "chips",
+            "fieldPath": "selectedChips",
+            "columnName": "selectedChips",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -101,7 +101,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"33bfd70b74a9abec38128bcd94442782\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c4d0ac155f7454d1880f873ef77fdb85\")"
     ]
   }
 }

@@ -11,7 +11,7 @@ import com.cohen.binaware.room.UserDao
 
 @Database(
     entities = [(UserContainer::class), (Ticket::class)],
-    version = 1//, (UserData::class)
+    version = 5//, (UserData::class)
 )
 abstract class AppDatabase : RoomDatabase() {
 

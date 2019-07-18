@@ -26,8 +26,10 @@ class Persistent(context: Context) : IPersistent {
 //        return appDatabase.userDao().liveActive
 //    }
 
-    override fun liveTickets(): LiveData<List<Ticket>> {
-        return appDatabase.ticketDao().liveClusters
+    override suspend fun liveTickets(): LiveData<List<Ticket>> {
+        return withContext(Dispatchers.IO) {
+             appDatabase.ticketDao().liveClusters
+        }
     }
 
     override suspend fun tickets(): List<Ticket> {

@@ -1,7 +1,7 @@
 package com.cohen.binaware.dummy
 
-import java.util.ArrayList
-import java.util.HashMap
+import com.cohen.binaware.models.Ticket
+import java.util.*
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -14,12 +14,12 @@ object DummyContent {
     /**
      * An array of sample (dummy) items.
      */
-    val ITEMS: MutableList<DummyItem> = ArrayList()
+    val ITEMS: MutableList<Ticket> = ArrayList()
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    val ITEM_MAP: MutableMap<String, DummyItem> = HashMap()
+    val ITEM_MAP: MutableMap<String, Ticket> = HashMap()
 
     private val COUNT = 25
 
@@ -30,13 +30,17 @@ object DummyContent {
         }
     }
 
-    private fun addItem(item: DummyItem) {
+    private fun addItem(item: Ticket) {
         ITEMS.add(item)
         ITEM_MAP.put(item.id, item)
     }
 
-    private fun createDummyItem(position: Int): DummyItem {
-        return DummyItem(position.toString(), "Item " + position, makeDetails(position))
+    private fun createDummyItem(position: Int): Ticket {
+        return Ticket(
+            id = position.toString(),
+            title = "Item $position",
+            subTitle = makeDetails(position)
+        )
     }
 
     private fun makeDetails(position: Int): String {
@@ -48,10 +52,5 @@ object DummyContent {
         return builder.toString()
     }
 
-    /**
-     * A dummy item representing a piece of content.
-     */
-    data class DummyItem(val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
+
 }

@@ -1,44 +1,66 @@
 package com.cohen.binaware.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.cohen.binaware.data.ChipData
+import com.cohen.binaware.dummy.DummyContent
 import com.cohen.binaware.models.Ticket
 import com.cohen.binaware.room.Persistent
 
-class AddTicketViewModel(val persistent: Persistent) : ViewModel() {
 
-    private val chipsData = MutableLiveData<ChipData?>()
+class TicketViewModel(private val persistent: Persistent) : ViewModel() {
 
-    fun setSelectedTicketType(ticketType: TicketType?) {
-        selectedTicketType.postValue(ticketType)
+    private val chipsData = MutableLiveData<ChipData?>(null)
+    val tickets = liveData { emitSource(persistent.liveTickets()) }
+    var addNewTicketType = MutableLiveData<Ticket.TicketType?>(null)
+    var viewTicket = MutableLiveData<Ticket?>(null)
+    var filter = MutableLiveData("")
+    var filteredTickets = MediatorLiveData<List<Ticket>>()
+
+    init {
+
+        filteredTickets.addSource(tickets) {
+            filterList()
+        }
+        filteredTickets.addSource(filter) { filter ->
+            filterList()
+        }
+
     }
 
-
-    var selectedTicketType = MutableLiveData<TicketType?>()
-
-
-    enum class TicketType {
-        SERVICE, PARTS, URGENT
+    private fun filterList() {
+        if (filter != null && tickets.value != null) {
+            val list = ArrayList<Ticket>()
+            list.addAll(tickets.value as ArrayList)
+            list.addAll(DummyContent.ITEMS)
+            filteredTickets.value = list.filter {
+                it.title?.toLowerCase()?.startsWith(filter.value?.toLowerCase() ?: "") ?: true
+            }
+        }
     }
 
+    fun setSelectedVewTicket(ticket: Ticket) {
+        viewTicket.postValue(ticket)
+    }
+
+    fun setSelectedTicketType(ticketType: Ticket.TicketType?) {
+        addNewTicketType.postValue(ticketType)
+    }
 
     fun getChipsData(): LiveData<ChipData?> {
         return chipsData
 
     }
 
-    fun setupChipsData(ticketType: TicketType) {
+    fun setupChipsData(ticketType: Ticket.TicketType) {
 
         when (ticketType) {
-            TicketType.SERVICE -> {
+            Ticket.TicketType.SERVICE -> {
 
             }
-            TicketType.PARTS -> {
+            Ticket.TicketType.PARTS -> {
 
             }
-            TicketType.URGENT -> {
+            Ticket.TicketType.URGENT -> {
 
             }
 
@@ -98,7 +120,8 @@ class AddTicketViewModel(val persistent: Persistent) : ViewModel() {
         persistent.addOrUpdateTicket(ticket)
     }
 
-    fun init(persistent: Persistent) {
-//        this.persistent = persistent
+    fun setFilter(string: String) {
+        filter.postValue(string)
     }
+
 }

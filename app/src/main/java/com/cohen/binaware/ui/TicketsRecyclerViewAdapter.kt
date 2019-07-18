@@ -1,40 +1,31 @@
 package com.cohen.binaware.ui
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cohen.binaware.R
-import com.cohen.binaware.dummy.DummyContent
+import com.cohen.binaware.models.Ticket
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class TicketsRecyclerViewAdapter(
-    private val parentActivity: MainActivity,
-    private val values: List<DummyContent.DummyItem>,
-    private val twoPane: Boolean
+    private val parentActivity: MainActivity, ticketClicked: (Ticket) -> Any
 ) :
     RecyclerView.Adapter<TicketsRecyclerViewAdapter.ViewHolder>() {
-
+    var values: List<Ticket> = ArrayList()
     private val onClickListener: View.OnClickListener
 
     init {
         onClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyContent.DummyItem
-            if (twoPane) {
-                val fragment = ItemDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ItemDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                }
+            ticketClicked.invoke(v.tag as Ticket)
 //                    parentActivity.supportFragmentManager
 //                        .beginTransaction()
 //                        .replace(R.id.item_detail_container, fragment)
 //                        .commit()
-            } else {
+
 //                  J.context.startActivity(intent)
-            }
+
         }
     }
 
@@ -46,8 +37,25 @@ class TicketsRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.titleView.text = item.title
+        holder.contentView.text = item.subTitle
+
+        when (item.ticketType) {
+            Ticket.TicketType.PARTS -> {
+                holder.circle.text = "P"
+                holder.circle.background = parentActivity.resources.getDrawable(R.drawable.circle_p)
+            }
+            Ticket.TicketType.SERVICE -> {
+                holder.circle.text = "S"
+                holder.circle.background = parentActivity.resources.getDrawable(R.drawable.circle_s)
+
+            }
+            Ticket.TicketType.URGENT -> {
+                holder.circle.text = "U"
+                holder.circle.background = parentActivity.resources.getDrawable(R.drawable.circle_u)
+
+            }
+        }
 
         with(holder.itemView) {
             tag = item
@@ -58,7 +66,8 @@ class TicketsRecyclerViewAdapter(
     override fun getItemCount() = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.id_text
+        val titleView: TextView = view.title_text
         val contentView: TextView = view.content
+        val circle: TextView = view.circle
     }
 }

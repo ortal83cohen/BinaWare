@@ -3,24 +3,30 @@ package com.cohen.binaware.ui
 import android.animation.ValueAnimator
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
-import com.cohen.binaware.dummy.DummyContent
 import com.cohen.binaware.helpers.hideKeyboard
-import com.cohen.binaware.viewmodel.AddTicketViewModel
+import com.cohen.binaware.models.Ticket
+import com.cohen.binaware.viewmodel.TicketViewModel
 import kotlinx.android.synthetic.main.content_scrolling.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class MainFragment : Fragment() {
-    val addTicketViewModel: AddTicketViewModel by sharedViewModel()
+    private lateinit var adapter: TicketsRecyclerViewAdapter
+    val ticketViewModel: TicketViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,21 +87,47 @@ class MainFragment : Fragment() {
             }
         }
 
+        search.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                ticketViewModel.setFilter(p0.toString())
+            }
+
+        })
+
         menu.setOnClickListener {
             Toast.makeText(context, "open menu", Toast.LENGTH_SHORT).show()
         }
 
         setupRecyclerView(item_list)
 
-
-        b1.setOnClickListener { addTicketViewModel.setSelectedTicketType(AddTicketViewModel.TicketType.SERVICE) }
-        b2.setOnClickListener { addTicketViewModel.setSelectedTicketType(AddTicketViewModel.TicketType.PARTS) }
-        b3.setOnClickListener { addTicketViewModel.setSelectedTicketType(AddTicketViewModel.TicketType.URGENT) }
+        b1.setOnClickListener { ticketViewModel.setSelectedTicketType(Ticket.TicketType.SERVICE) }
+        b2.setOnClickListener { ticketViewModel.setSelectedTicketType(Ticket.TicketType.PARTS) }
+        b3.setOnClickListener { ticketViewModel.setSelectedTicketType(Ticket.TicketType.URGENT) }
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter =
-            TicketsRecyclerViewAdapter(activity as MainActivity, DummyContent.ITEMS, false)
+        adapter = TicketsRecyclerViewAdapter(activity as MainActivity) {
+            ticketViewModel.setSelectedVewTicket(it)
+        }
+        recyclerView.adapter = adapter
+
+        val dividerItemDecoration = DividerItemDecoration(
+            recyclerView.context,
+            LinearLayout.VERTICAL
+        )
+        recyclerView.addItemDecoration(dividerItemDecoration)
+        ticketViewModel.filteredTickets.observe(this, Observer {
+            adapter.values = it
+            adapter.notifyDataSetChanged()
+        })
     }
 
     companion object {

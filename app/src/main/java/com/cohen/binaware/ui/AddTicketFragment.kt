@@ -14,7 +14,7 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.cohen.binaware.R
 import com.cohen.binaware.data.ChipData
 import com.cohen.binaware.models.Ticket
-import com.cohen.binaware.viewmodel.AddTicketViewModel
+import com.cohen.binaware.viewmodel.TicketViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.android.synthetic.main.fragment_add_ticket.*
@@ -24,12 +24,13 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AddTicketFragment : Fragment() {
     var fabOpen = false
+    val selectedChips = HashMap<String, String>()
 
     companion object {
         fun newInstance() = AddTicketFragment()
     }
 
-    val addTicketViewModel: AddTicketViewModel by sharedViewModel()
+    val ticketViewModel: TicketViewModel by sharedViewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,28 +51,35 @@ class AddTicketFragment : Fragment() {
             Toast.makeText(context, "open menu", Toast.LENGTH_SHORT).show()
         }
 
-        addTicketViewModel.selectedTicketType.observe(activity as MainActivity, Observer {
+        ticketViewModel.addNewTicketType.observe(activity as MainActivity, Observer {
 
             when (it) {
-                AddTicketViewModel.TicketType.SERVICE -> {
+                Ticket.TicketType.SERVICE -> {
                     title?.text = "Add service ticket"
                 }
-                AddTicketViewModel.TicketType.PARTS -> {
+                Ticket.TicketType.PARTS -> {
                     title?.text = "Add spare parts ticket"
                 }
-                AddTicketViewModel.TicketType.URGENT -> {
+                Ticket.TicketType.URGENT -> {
                     title?.text = "Add urgent ticket"
                 }
 
             }
 
-            addChipGroup(addTicketViewModel.getChipsData().value, chipGroup, reason)
+            addChipGroup(ticketViewModel.getChipsData().value, chipGroup, reason)
 
+            button?.setOnClickListener {
+                ticketViewModel.addTicket(
+                    Ticket(
+                        title = title?.text?.replace(Regex("Add "), ""),
+                        ticketType = ticketViewModel.addNewTicketType.value!!,
+                        subTitle = edit_text.text.toString(),
+                        selectedChips = selectedChips,
+                        machineIsRunning = machineIsRunningSwitch.isChecked
+                    )
+                )
+                edit_text.setText("")
 
-            button.setOnClickListener {
-
-
-                addTicketViewModel.addTicket(Ticket())
             }
         })
 
@@ -133,9 +141,11 @@ class AddTicketFragment : Fragment() {
                             else -> button.isEnabled = false
                         }
                     } else {
+
                         for (i in 0 until childCount) {
                             val chip = getChildAt(i) as Chip
                             if (chip.id == id) {
+                                selectedChips[chipData.subListName] = chip.text.toString()
                                 if (chip.tag is ChipData) {
                                     val chipData = chip.tag as ChipData
                                     when (chipData.tierNumber) {
@@ -162,6 +172,7 @@ class AddTicketFragment : Fragment() {
 
     private fun removeAllChipViews(chipGroup: ChipGroup?, reason: TextView?) {
         button.isEnabled = false
+        selectedChips.remove(reason?.text.toString())
         reason?.text = ""
         chipGroup?.apply {
             getChildAt(0)?.let {

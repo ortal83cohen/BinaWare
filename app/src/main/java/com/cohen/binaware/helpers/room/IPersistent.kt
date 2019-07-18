@@ -2,7 +2,6 @@ package com.cohen.binaware.helpers.room
 
 import androidx.lifecycle.LiveData
 import com.cohen.binaware.models.Ticket
-import com.cohen.binaware.models.UserContainer
 
 interface IPersistent {
 
@@ -10,7 +9,7 @@ interface IPersistent {
 
 //    suspend fun liveActiveUser(): LiveData<UserContainer>
 
-    fun liveTickets(): LiveData<List<Ticket>>
+    suspend fun liveTickets(): LiveData<List<Ticket>>
 
     suspend fun tickets(): List<Ticket>
 

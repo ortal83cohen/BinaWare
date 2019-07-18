@@ -10,14 +10,14 @@ import java.util.*
 class TicketConverters : BaseTypeConverter() {
 
     @TypeConverter
-    fun usersFromString(string: String): HashMap<String, Ticket.User> {
+    fun usersFromString(string: String): Ticket.TicketType {
         return BaseTypeConverter.fromString(
             string,
-            object : TypeToken<HashMap<String, Ticket.User>>() {})
+            object : TypeToken<Ticket.TicketType>() {})
     }
 
     @TypeConverter
-    fun toString(users: HashMap<String, Ticket.User>): String {
+    fun toString(users: Ticket.TicketType): String {
         return BaseTypeConverter.fromObject(users)
     }
 
@@ -48,6 +48,15 @@ class TicketConverters : BaseTypeConverter() {
 
     @TypeConverter
     fun toString(time: ArrayList<String>): String {
+        return BaseTypeConverter.fromObject(time)
+    }
+    @TypeConverter
+    fun HashMapFromString(string: String): HashMap<String, String> {
+        return BaseTypeConverter.fromString(string, object : TypeToken<HashMap<String, String>>() {})
+    }
+
+    @TypeConverter
+    fun toString(time: HashMap<String, String>): String {
         return BaseTypeConverter.fromObject(time)
     }
 

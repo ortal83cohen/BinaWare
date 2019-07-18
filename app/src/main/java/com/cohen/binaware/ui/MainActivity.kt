@@ -2,11 +2,12 @@ package com.cohen.binaware.ui
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.cohen.binaware.R
 import com.cohen.binaware.room.Persistent
-import com.cohen.binaware.viewmodel.AddTicketViewModel
+import com.cohen.binaware.viewmodel.TicketViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -14,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     val persistent: Persistent   by inject()
-    private lateinit var addTicketViewModel: AddTicketViewModel
+    val ticketViewModel: TicketViewModel by viewModel()
 
     private val addTicketFragment =
         if (supportFragmentManager.findFragmentByTag("AddTicketFragment") != null) {
@@ -35,19 +36,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val addTicketViewModel: AddTicketViewModel by viewModel()
-//        persistent = Persistent(this)
-        addTicketViewModel.init(persistent)
         setMainMode()
 
-        addTicketViewModel.selectedTicketType.observe(this, Observer {
+        ticketViewModel.addNewTicketType.observe(this, Observer {
             it?.let {
-                addTicketViewModel.setupChipsData(it)
+                ticketViewModel.setupChipsData(it)
                 setAddTicketMode()
             } ?: kotlin.run {
                 // setMainMode()
             }
 
+        })
+
+        ticketViewModel.tickets.observe(this, Observer {
+            Toast.makeText(this, "Ticket added", Toast.LENGTH_SHORT).show()
+            setMainMode()
         })
 
     }
@@ -88,17 +91,9 @@ class MainActivity : AppCompatActivity() {
 
         when {
             mainFragment.isVisible -> finish()
-            addTicketFragment.isVisible -> addTicketViewModel.setSelectedTicketType(null)
+            addTicketFragment.isVisible -> ticketViewModel.setSelectedTicketType(null)
         }
         super.onBackPressed()
     }
-//    public class DetailsTransition : TransitionSet {
-//        public DetailsTransition() {
-//            setOrdering(ORDERING_TOGETHER);
-//            addTransition( ChangeBounds()).
-//                addTransition( ChangeTransform()).
-//                addTransition( ChangeImageTransform()));
-//        }
-//    }
 }
 
