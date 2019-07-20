@@ -5,11 +5,15 @@ import com.cohen.binaware.data.ChipData
 import com.cohen.binaware.dummy.DummyContent
 import com.cohen.binaware.models.Ticket
 import com.cohen.binaware.room.Persistent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 
 class TicketViewModel(private val persistent: Persistent) : ViewModel() {
 
-    private val chipsData = MutableLiveData<ChipData?>(null)
+    private val chipsData = MutableLiveData<ArrayList<ChipData>>(ArrayList())
     val tickets = liveData { emitSource(persistent.liveTickets()) }
     var addNewTicketType = MutableLiveData<Ticket.TicketType?>(null)
     var viewTicket = MutableLiveData<Ticket?>(null)
@@ -46,7 +50,7 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
         addNewTicketType.postValue(ticketType)
     }
 
-    fun getChipsData(): LiveData<ChipData?> {
+    fun getChipsData(): LiveData<ArrayList<ChipData>> {
         return chipsData
 
     }
@@ -111,7 +115,16 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
         reasonsSubList.add(ChipData("Missing", "Type", typeSubList, ChipData.TierNumber.SECOND))
         reasonsSubList.add(ChipData("Reason #3", "Type", typeSubList, ChipData.TierNumber.SECOND))
 
-        chipsData.postValue(ChipData(null, "reasons", reasonsSubList, ChipData.TierNumber.FIRST))
+        chipsData.postValue(
+            arrayListOf(
+                ChipData(
+                    null,
+                    "reasons",
+                    reasonsSubList,
+                    ChipData.TierNumber.FIRST
+                )
+            )
+        )
 
 
     }
@@ -122,6 +135,27 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
 
     fun setFilter(string: String) {
         filter.postValue(string)
+    }
+
+    fun chipSelected(): (Int, ChipData) -> Any {
+        return { position, chipData ->
+            viewModelScope.launch {
+                    val list = ArrayList(chipsData.value!!.subList(0, position + 1))
+                    if(chipsData.value!!.size > list.size) {
+                        chipsData.postValue(ArrayList(chipsData.value!!.subList(0, position + 1)))
+                        delay(100)
+                    }
+                    list.add(chipData)
+                    chipsData.postValue(list)
+            }
+        }
+    }
+
+    fun chipUnselected(): (Int) -> Any {
+        return { position ->
+            val list = ArrayList(chipsData.value!!.subList(0, position + 1))
+            chipsData.postValue(list)
+        }
     }
 
 }

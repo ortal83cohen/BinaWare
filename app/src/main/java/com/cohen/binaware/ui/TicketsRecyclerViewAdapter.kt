@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cohen.binaware.R
 import com.cohen.binaware.models.Ticket
-import kotlinx.android.synthetic.main.item_list_content.view.*
+import kotlinx.android.synthetic.main.ticket_item_list_content.view.*
 
 class TicketsRecyclerViewAdapter(
     private val parentActivity: MainActivity, ticketClicked: (Ticket) -> Any
@@ -19,19 +19,12 @@ class TicketsRecyclerViewAdapter(
     init {
         onClickListener = View.OnClickListener { v ->
             ticketClicked.invoke(v.tag as Ticket)
-//                    parentActivity.supportFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.item_detail_container, fragment)
-//                        .commit()
-
-//                  J.context.startActivity(intent)
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_list_content, parent, false)
+            .inflate(R.layout.ticket_item_list_content, parent, false)
         return ViewHolder(view)
     }
 

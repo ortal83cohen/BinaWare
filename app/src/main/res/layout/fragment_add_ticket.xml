@@ -37,6 +37,7 @@
         android:id="@+id/tabsMotionLayout"
         android:layout_width="200dp"
         android:layout_height="300dp"
+        android:foregroundGravity="center"
         app:layoutDescription="@xml/fabs_motion_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -52,7 +53,8 @@
             app:fabSize="mini"
             app:layout_anchorGravity="bottom|end"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fab"
+            app:layout_constraintRight_toRightOf="@+id/fab"
             app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -65,7 +67,8 @@
             app:fabSize="mini"
             app:layout_anchorGravity="bottom|end"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fab"
+            app:layout_constraintRight_toRightOf="@+id/fab"
             app:srcCompat="@drawable/ic_perm_camera_mic_black_24dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -78,7 +81,8 @@
             app:fabSize="mini"
             app:layout_anchorGravity="bottom|end"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fab"
+            app:layout_constraintRight_toRightOf="@+id/fab"
             app:srcCompat="@drawable/ic_attach_file_black_24dp" />
 
 
@@ -142,69 +146,22 @@
 
         />
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_list"
+        android:name="com.cohen.binaware.AddTicketFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text">
+        app:layout_constraintTop_toBottomOf="@+id/edit_text"
+        tools:context=".ui.MainActivity"
+        tools:listitem="@layout/chips_selection_item_list_content"
+        tools:showIn="@layout/activity_main" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reason"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            tools:text="Reason" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:chipSpacingHorizontal="8dp"
-            app:chipSpacingVertical="8dp"
-            app:singleSelection="true" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reason2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            tools:text="Reason" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:chipSpacingHorizontal="8dp"
-            app:chipSpacingVertical="8dp"
-            app:singleSelection="true" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/reason3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            tools:text="Reason" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:chipSpacingHorizontal="8dp"
-            app:chipSpacingVertical="8dp"
-            app:singleSelection="true" />
-    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
