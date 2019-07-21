@@ -21,7 +21,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AddTicketFragment : Fragment() {
     private lateinit var adapter: ChipsRecyclerViewAdapter
-    var fabOpen = false
 
     companion object {
         fun newInstance() = AddTicketFragment()
@@ -75,20 +74,20 @@ class AddTicketFragment : Fragment() {
             })
 
             ticketViewModel.getAddNewTicketType().observe(it, Observer {
-
-                when (it) {
+                val titleString = when (it) {
                     Ticket.TicketType.SERVICE -> {
-                        title?.text = getString(R.string.add_service_ticket)
+                        getString(R.string.service_ticket)
                     }
                     Ticket.TicketType.PARTS -> {
-                        title?.text = getString(R.string.add_spare_ticket)
+                        getString(R.string.spare_ticket)
                     }
                     Ticket.TicketType.URGENT -> {
-                        title?.text = getString(R.string.add_urgent_ticket)
+                        getString(R.string.urgent_ticket)
                     }
-
+                    else -> "?"
                 }
 
+                title?.text = "${getString(R.string.add)} $titleString"
                 button?.setOnClickListener {
                     val selectedChips = HashMap<String, String>()
                     var subListName = ""
@@ -102,7 +101,7 @@ class AddTicketFragment : Fragment() {
 
                     ticketViewModel.addTicket(
                         Ticket(
-                            title = title?.text?.replace(Regex("Add "), ""),
+                            title = titleString,
                             ticketType = ticketViewModel.getAddNewTicketType().value!!,
                             subTitle = edit_text.text.toString(),
                             selectedChips = selectedChips,
@@ -118,7 +117,6 @@ class AddTicketFragment : Fragment() {
         fab.setOnClickListener { view ->
             if (tabsMotionLayout.progress == 0f) {
                 tabsMotionLayout.transitionToEnd()
-                fabOpen = true
                 fab.setImageDrawable(
                     AnimatedVectorDrawableCompat.create(
                         context!!,
@@ -131,7 +129,6 @@ class AddTicketFragment : Fragment() {
                 }
             } else {
                 tabsMotionLayout.transitionToStart()
-                fabOpen = false
                 fab.setImageDrawable(
                     AnimatedVectorDrawableCompat.create(
                         context!!,

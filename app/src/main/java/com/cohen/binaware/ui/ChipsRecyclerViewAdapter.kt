@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.chips_selection_item_list_content.view.*
 
 class ChipsRecyclerViewAdapter(
     private val parentActivity: MainActivity,
-    private val chipSelected: (Int,ChipData) -> Any,
+    private val chipSelected: (Int, ChipData) -> Any,
     private val chipUnselected: (Int) -> Any
 ) :
     RecyclerView.Adapter<ChipsRecyclerViewAdapter.ViewHolder>() {
@@ -38,7 +38,7 @@ class ChipsRecyclerViewAdapter(
                     } else {
                         for (i in 0 until childCount) {
                             val chip = getChildAt(i) as Chip
-                            if(chip.id == id) {
+                            if (chip.id == id) {
                                 chipSelected.invoke(position, chip.tag as ChipData)
                             }
                         }

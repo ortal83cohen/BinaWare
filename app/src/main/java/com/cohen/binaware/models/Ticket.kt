@@ -17,8 +17,8 @@ data class Ticket constructor(
     var title: String? = null,
     var subTitle: String? = null,
     var time: Date? = Date(),
-    var selectedChips : HashMap<String, String> = HashMap(),
-    var machineIsRunning :Boolean = true,
+    var selectedChips: HashMap<String, String> = HashMap(),
+    var machineIsRunning: Boolean = true,
     @Ignore
     private val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss")
 ) {

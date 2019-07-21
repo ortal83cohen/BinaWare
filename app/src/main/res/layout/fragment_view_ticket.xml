@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tabsMotionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    app:layoutDescription="@xml/view_ticket_motion_layout"
     tools:context=".ui.AddTicketFragment">
 
     <View
@@ -12,12 +14,25 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@color/white"
-        android:transitionName="toolbar_layout"
         android:elevation="3dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:transitionName="toolbar_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-      />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/menu"
+        tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/menu"
@@ -27,6 +42,7 @@
         android:layout_marginTop="8dp"
         android:elevation="3dp"
         android:padding="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_menu_black_24dp"
         android:transitionName="menu"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,12 +54,105 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="120dp"
         android:transitionName="fab"
         app:elevation="10dp"
         app:layout_anchorGravity="top"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar_layout"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/plus_vector" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:elevation="10dp"
+        app:fabSize="mini"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/fab"
+        app:layout_constraintRight_toRightOf="@+id/fab"
+        app:srcCompat="@drawable/ic_create_black_24dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:elevation="10dp"
+        app:fabSize="mini"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/fab"
+        app:layout_constraintRight_toRightOf="@+id/fab"
+        app:srcCompat="@drawable/ic_restore_black_24dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:elevation="10dp"
+        app:fabSize="mini"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/fab"
+        app:layout_constraintRight_toRightOf="@+id/fab"
+
+        app:srcCompat="@drawable/ic_archive_black_24dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:text="@string/edit"
+        app:layout_constraintBottom_toBottomOf="@+id/fab1"
+        app:layout_constraintLeft_toLeftOf="@+id/fab1"
+        app:layout_constraintTop_toTopOf="@+id/fab1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:text="@string/snooze"
+        app:layout_constraintBottom_toBottomOf="@+id/fab2"
+        app:layout_constraintLeft_toLeftOf="@+id/fab2"
+        app:layout_constraintTop_toTopOf="@+id/fab2" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:text="@string/archive"
+        app:layout_constraintBottom_toBottomOf="@+id/fab3"
+        app:layout_constraintLeft_toLeftOf="@+id/fab3"
+        app:layout_constraintTop_toTopOf="@+id/fab3" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_list"
+        android:name="com.cohen.binaware.AddTicketFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_layout"
+        tools:context=".ui.MainActivity"
+        tools:listitem="@layout/chips_selection_item_list_content"
+        tools:showIn="@layout/activity_main" />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
