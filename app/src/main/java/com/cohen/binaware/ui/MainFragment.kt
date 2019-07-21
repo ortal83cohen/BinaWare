@@ -114,9 +114,10 @@ class MainFragment : Fragment() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        adapter = TicketsRecyclerViewAdapter(activity as MainActivity) {
-            ticketViewModel.setSelectedVewTicket(it)
-        }
+        adapter = TicketsRecyclerViewAdapter(
+            activity as MainActivity,
+            ticketViewModel.setSelectedVewTicket()
+        )
         recyclerView.adapter = adapter
 
         val dividerItemDecoration = DividerItemDecoration(
@@ -124,7 +125,7 @@ class MainFragment : Fragment() {
             LinearLayout.VERTICAL
         )
         recyclerView.addItemDecoration(dividerItemDecoration)
-        ticketViewModel.filteredTickets.observe(this, Observer {
+        ticketViewModel.getFilteredTickets().observe(this, Observer {
             adapter.values = it
             adapter.notifyDataSetChanged()
         })

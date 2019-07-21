@@ -45,50 +45,75 @@ class AddTicketFragment : Fragment() {
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
         menu.setOnClickListener {
-            Toast.makeText(context, "open menu", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.open_menu), Toast.LENGTH_SHORT).show()
         }
 
         setupRecyclerView(item_list)
 
-        ticketViewModel.addNewTicketType.observe(activity as MainActivity, Observer {
+        activity?.let {
 
-            when (it) {
-                Ticket.TicketType.SERVICE -> {
-                    title?.text = "Add service ticket"
-                }
-                Ticket.TicketType.PARTS -> {
-                    title?.text = "Add spare parts ticket"
-                }
-                Ticket.TicketType.URGENT -> {
-                    title?.text = "Add urgent ticket"
-                }
-
-            }
-
-            button?.setOnClickListener {
-                val selectedChips = HashMap<String, String>()
-                var subListName =""
-                ticketViewModel.getChipsData().value!!.forEach { chip ->
-                    chip.name?.let {name->
-                        selectedChips[subListName] = name
+            ticketViewModel.getChipsData().observe(it, Observer {
+                val oldSize = adapter.values.size
+                adapter.values = it
+                when {
+                    adapter.values.size == oldSize -> {
+                        //         adapter.notifyItemChanged(oldSize - 1)
                     }
-                    subListName = chip.subListName
+                    adapter.values.size < oldSize -> {
+                        adapter.notifyItemRangeRemoved(
+                            adapter.values.size,
+                            oldSize - adapter.values.size
+                        )
+                    }
+                    adapter.values.size > oldSize -> {
+                        adapter.notifyItemInserted(oldSize)
+                    }
+                }
+
+                button?.isEnabled = it.last().subList == null
+
+            })
+
+            ticketViewModel.getAddNewTicketType().observe(it, Observer {
+
+                when (it) {
+                    Ticket.TicketType.SERVICE -> {
+                        title?.text = getString(R.string.add_service_ticket)
+                    }
+                    Ticket.TicketType.PARTS -> {
+                        title?.text = getString(R.string.add_spare_ticket)
+                    }
+                    Ticket.TicketType.URGENT -> {
+                        title?.text = getString(R.string.add_urgent_ticket)
+                    }
 
                 }
 
-                ticketViewModel.addTicket(
-                    Ticket(
-                        title = title?.text?.replace(Regex("Add "), ""),
-                        ticketType = ticketViewModel.addNewTicketType.value!!,
-                        subTitle = edit_text.text.toString(),
-                        selectedChips = selectedChips,
-                        machineIsRunning = machineIsRunningSwitch.isChecked
-                    )
-                )
-                edit_text.setText("")
+                button?.setOnClickListener {
+                    val selectedChips = HashMap<String, String>()
+                    var subListName = ""
+                    ticketViewModel.getChipsData().value!!.forEach { chip ->
+                        chip.name?.let { name ->
+                            selectedChips[subListName] = name
+                        }
+                        subListName = chip.subListName
 
-            }
-        })
+                    }
+
+                    ticketViewModel.addTicket(
+                        Ticket(
+                            title = title?.text?.replace(Regex("Add "), ""),
+                            ticketType = ticketViewModel.getAddNewTicketType().value!!,
+                            subTitle = edit_text.text.toString(),
+                            selectedChips = selectedChips,
+                            machineIsRunning = machineIsRunningSwitch.isChecked
+                        )
+                    )
+                    edit_text.setText("")
+
+                }
+            })
+        }
 
         fab.setOnClickListener { view ->
             if (tabsMotionLayout.progress == 0f) {
@@ -129,28 +154,6 @@ class AddTicketFragment : Fragment() {
             ticketViewModel.chipUnselected()
         )
         recyclerView.adapter = adapter
-
-        ticketViewModel.getChipsData().observe(activity as MainActivity, Observer {
-            val oldSize = adapter.values.size
-            adapter.values = it
-            when {
-                adapter.values.size == oldSize -> {
-                    //         adapter.notifyItemChanged(oldSize - 1)
-                }
-                adapter.values.size < oldSize -> {
-                    adapter.notifyItemRangeRemoved(
-                        adapter.values.size,
-                        oldSize - adapter.values.size
-                    )
-                }
-                adapter.values.size > oldSize -> {
-                    adapter.notifyItemInserted(oldSize)
-                }
-            }
-
-            button?.isEnabled = it.last().subList == null
-
-        })
 
     }
 }

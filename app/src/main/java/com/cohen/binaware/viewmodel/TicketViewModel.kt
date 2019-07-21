@@ -5,20 +5,18 @@ import com.cohen.binaware.data.ChipData
 import com.cohen.binaware.dummy.DummyContent
 import com.cohen.binaware.models.Ticket
 import com.cohen.binaware.room.Persistent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 
 class TicketViewModel(private val persistent: Persistent) : ViewModel() {
 
     private val chipsData = MutableLiveData<ArrayList<ChipData>>(ArrayList())
     val tickets = liveData { emitSource(persistent.liveTickets()) }
-    var addNewTicketType = MutableLiveData<Ticket.TicketType?>(null)
-    var viewTicket = MutableLiveData<Ticket?>(null)
-    var filter = MutableLiveData("")
-    var filteredTickets = MediatorLiveData<List<Ticket>>()
+    private  var addNewTicketType = MutableLiveData<Ticket.TicketType?>(null)
+    private var viewTicket = MutableLiveData<Ticket?>(null)
+    private   var filter = MutableLiveData("")
+    private var filteredTickets = MediatorLiveData<List<Ticket>>()
 
     init {
 
@@ -42,8 +40,10 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
         }
     }
 
-    fun setSelectedVewTicket(ticket: Ticket) {
-        viewTicket.postValue(ticket)
+    fun setSelectedVewTicket(): (Ticket) -> Any {
+        return {
+            viewTicket.postValue(it)
+        }
     }
 
     fun setSelectedTicketType(ticketType: Ticket.TicketType?) {
@@ -129,6 +129,10 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
 
     }
 
+    fun getViewTicket(): LiveData<Ticket?>{
+        return viewTicket
+    }
+
     fun addTicket(ticket: Ticket) {
         persistent.addOrUpdateTicket(ticket)
     }
@@ -140,13 +144,13 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
     fun chipSelected(): (Int, ChipData) -> Any {
         return { position, chipData ->
             viewModelScope.launch {
-                    val list = ArrayList(chipsData.value!!.subList(0, position + 1))
-                    if(chipsData.value!!.size > list.size) {
-                        chipsData.postValue(ArrayList(chipsData.value!!.subList(0, position + 1)))
-                        delay(100)
-                    }
-                    list.add(chipData)
-                    chipsData.postValue(list)
+                val list = ArrayList(chipsData.value!!.subList(0, position + 1))
+                if (chipsData.value!!.size > list.size) {
+                    chipsData.postValue(ArrayList(chipsData.value!!.subList(0, position + 1)))
+                    delay(100)
+                }
+                list.add(chipData)
+                chipsData.postValue(list)
             }
         }
     }
@@ -156,6 +160,16 @@ class TicketViewModel(private val persistent: Persistent) : ViewModel() {
             val list = ArrayList(chipsData.value!!.subList(0, position + 1))
             chipsData.postValue(list)
         }
+    }
+
+    fun getAddNewTicketType(): LiveData<Ticket.TicketType?> {
+        return addNewTicketType
+
+    }
+
+    fun getFilteredTickets(): LiveData<List<Ticket>> {
+        return filteredTickets
+
     }
 
 }

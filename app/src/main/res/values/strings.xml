@@ -4,4 +4,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_service_ticket">Add service ticket</string>
+    <string name="add_spare_ticket">Add spare parts ticket</string>
+    <string name="add_urgent_ticket">Add urgent ticket</string>
+    <string name="open_menu">open menu</string>
 </resources>

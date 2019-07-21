@@ -2,7 +2,6 @@ package com.cohen.binaware.ui
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.cohen.binaware.R
@@ -24,6 +23,13 @@ class MainActivity : AppCompatActivity() {
             AddTicketFragment.newInstance()
         }
 
+    private val viewTicketFragment =
+        if (supportFragmentManager.findFragmentByTag("ItemDetailFragment") != null) {
+            supportFragmentManager.findFragmentByTag("ItemDetailFragment") as ViewTicketFragment
+        } else {
+            ViewTicketFragment.newInstance()
+        }
+
     private val mainFragment by lazy {
         if (supportFragmentManager.findFragmentByTag("MainFragment") != null) {
             supportFragmentManager.findFragmentByTag("MainFragment") as MainFragment
@@ -38,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         setMainMode()
 
-        ticketViewModel.addNewTicketType.observe(this, Observer {
+        ticketViewModel.getAddNewTicketType().observe(this, Observer {
             it?.let {
                 ticketViewModel.setupChipsData(it)
                 setAddTicketMode()
@@ -48,8 +54,16 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        ticketViewModel.getViewTicket().observe(this, Observer {
+            it?.let {
+                setViewTicketMode()
+            } ?: kotlin.run {
+                // setMainMode()
+            }
+
+        })
+
         ticketViewModel.tickets.observe(this, Observer {
-            Toast.makeText(this, "Ticket added", Toast.LENGTH_SHORT).show()
             setMainMode()
         })
 
@@ -84,6 +98,26 @@ class MainActivity : AppCompatActivity() {
         transaction.addSharedElement(mainFragment.fab, mainFragment.fab.transitionName)
         transaction.replace(R.id.fragment_container, addTicketFragment, "addTicketFragment")
         transaction.addToBackStack("addTicketFragment")
+        transaction.commit()
+    }
+
+    private fun setViewTicketMode() {
+        mainFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        viewTicketFragment.sharedElementEnterTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        viewTicketFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+        mainFragment.sharedElementReturnTransition =
+            TransitionInflater.from(this).inflateTransition(android.R.transition.move)
+
+        val transaction = supportFragmentManager.beginTransaction()
+        mainFragment.fab.show()
+        transaction.addSharedElement(mainFragment.fab, mainFragment.fab.transitionName)
+        transaction.addSharedElement(mainFragment.toolbar_layout, mainFragment.toolbar_layout.transitionName)
+        transaction.addSharedElement(mainFragment.menu, mainFragment.menu.transitionName)
+        transaction.replace(R.id.fragment_container, viewTicketFragment, "viewTicketFragment")
+        transaction.addToBackStack("viewTicketFragment")
         transaction.commit()
     }
 

@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:transitionName="toolbar_layout"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|enterAlways">
 
@@ -62,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:elevation="3dp"
+                    android:transitionName="menu"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="8dp"
                     android:src="@drawable/ic_menu_black_24dp"
